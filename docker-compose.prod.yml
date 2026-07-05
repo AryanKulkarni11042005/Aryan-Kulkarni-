@@ -1,0 +1,40 @@
+# Production compose — runs pre-built images pulled from Docker Hub.
+# Unlike docker-compose.yml, this does NOT build from source; the server
+# just downloads the images you pushed with `docker buildx ... --push`.
+#
+# Usage on the server:
+#   docker compose -f docker-compose.prod.yml pull
+#   docker compose -f docker-compose.prod.yml up -d
+services:
+  backend:
+    image: aryankulkarni11042005/portfolio-backend:latest
+    restart: unless-stopped
+    expose:
+      - "4000"
+    networks:
+      - portfolio
+
+  frontend:
+    image: aryankulkarni11042005/portfolio-frontend:latest
+    restart: unless-stopped
+    expose:
+      - "80"
+    depends_on:
+      - backend
+    networks:
+      - portfolio
+
+  nginx:
+    image: aryankulkarni11042005/portfolio-nginx:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - portfolio
+
+networks:
+  portfolio:
+    driver: bridge
