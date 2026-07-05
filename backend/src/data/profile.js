@@ -46,7 +46,7 @@ export const profile = {
     },
     {
       index: "02",
-      title: "Grounded",
+      title: "Hallucination Detection",
       subtitle: "Evidence-grounded hallucination detection in LLMs",
       status: "In progress — final year project",
       description:
